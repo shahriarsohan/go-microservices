@@ -1,0 +1,120 @@
+basePath: /
+consumes:
+    - application/json
+definitions:
+    GenericError:
+        properties:
+            message:
+                type: string
+                x-go-name: Message
+        type: object
+        x-go-package: github.com/shahriarsohan/go-microservice-nic/handlers
+    Product:
+        description: Product defines the structure for an API product
+        properties:
+            description:
+                description: the description for this poduct
+                maxLength: 10000
+                type: string
+                x-go-name: Description
+            id:
+                description: the id for the product
+                format: int64
+                minimum: 1
+                type: integer
+                x-go-name: ID
+            name:
+                description: the name for this poduct
+                maxLength: 255
+                type: string
+                x-go-name: Name
+            price:
+                description: the price for the product
+                format: float
+                minimum: 0.01
+                type: number
+                x-go-name: Price
+            sku:
+                description: the SKU for the product
+                pattern: '[a-z]+-[a-z]+-[a-z]+'
+                type: string
+                x-go-name: SKU
+        required:
+            - name
+            - price
+            - sku
+        type: object
+        x-go-package: github.com/shahriarsohan/go-microservice-nic/data
+info:
+    description: Documentation for Product API
+    title: of Product API
+    version: 1.0.0
+paths:
+    /products:
+        get:
+            description: Return a list of products
+            operationId: listProducts
+            responses:
+                "200":
+                    $ref: '#/responses/productResponse'
+            tags:
+                - products
+        post:
+            description: Create a new product
+            operationId: createProduct
+            parameters:
+                - description: |-
+                    Product data structure to Update or Create.
+                    Note: the id field is ignored by update and create operations
+                  in: body
+                  name: Body
+                  required: true
+                  schema:
+                    $ref: '#/definitions/Product'
+            responses:
+                "200":
+                    $ref: '#/responses/productResponse'
+                "422":
+                    $ref: '#/responses/errorValidation'
+                "501":
+                    $ref: '#/responses/errorResponse'
+            tags:
+                - products
+    /products/{id}:
+        delete:
+            description: Update a products details
+            operationId: deleteProduct
+            responses:
+                "201":
+                    $ref: '#/responses/noContentResponse'
+                "404":
+                    $ref: '#/responses/errorResponse'
+                "501":
+                    $ref: '#/responses/errorResponse'
+            tags:
+                - products
+produces:
+    - application/json
+responses:
+    errorResponse:
+        description: Generic error message returned as a string
+        schema:
+            $ref: '#/definitions/GenericError'
+    noContentResponse:
+        description: No content is returned by this API endpoint
+    productResponse:
+        description: A list of products
+        schema:
+            $ref: '#/definitions/Product'
+            items:
+                $ref: '#/definitions/Product'
+            type: array
+    productsResponse:
+        description: A list of products
+        schema:
+            items:
+                $ref: '#/definitions/Product'
+            type: array
+schemes:
+    - http
+swagger: "2.0"

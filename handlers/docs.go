@@ -31,11 +31,11 @@ type errorResponseWrapper struct {
 
 // Validation errors defined as an array of strings
 // swagger:response errorValidation
-// type errorValidationWrapper struct {
-// 	// Collection of the errors
-// 	// in: body
-// 	Body ValidationError
-// }
+type errorValidationWrapper struct {
+	// Collection of the errors
+	// in: body
+	Body ValidationError
+}
 
 // A list of products
 // swagger:response productsResponse
@@ -67,7 +67,7 @@ type productParamsWrapper struct {
 	Body data.Product
 }
 
-// swagger:parameters updateProduct
+// swagger:parameters listSingleProduct deleteProduct
 type productIDParamsWrapper struct {
 	// The id of the product for which the operation relates
 	// in: path
